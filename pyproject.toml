@@ -1,0 +1,25 @@
+[project]
+name = "graphly"
+version = "0.1.0"
+description = "turning data into nice graphs with minimal configuration"
+authors = [{name = "Paul Primerano"}]
+maintainers = [{name = "Paul Primerano", email="PaulMerrano@proton.me"}]
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    'Private :: Do not upload',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'Operating System :: Microsoft :: Windows',
+]
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+mypy_path = "src"
