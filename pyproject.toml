@@ -12,7 +12,9 @@ classifiers = [
     'Intended Audience :: Developers',
     'Operating System :: Microsoft :: Windows',
 ]
-dependencies = []
+dependencies = [
+    "pydantic>=2.13.4",
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]

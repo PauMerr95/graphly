@@ -1,0 +1,15 @@
+[general.config]
+width = 100
+height = 100
+theme = "Default"
+
+[IR.data.config]
+#override_height = 100
+#override_width  = 100
+y_axis = "hidden"
+spectra_spread = true
+
+[MS.data.config]
+y_axis = "visible"
+#override_height = 500
+override_width = 500
