@@ -2,7 +2,7 @@ import tomllib
 import argparse
 from pathlib import Path
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
 
 def parse_args() -> argparse.Namespace:
@@ -32,7 +32,7 @@ class IRDataConfig(BaseModel):
     override_height: Optional[int] = None
     override_width: Optional[int] = None
     y_axis: Literal["hidden", "visible"] = Field(alias="y-axis")
-    spectra_spread: str = Field(alias="spectra_spread")
+    spectra_spread: bool = False
 
 
 class MSDataConfig(BaseModel):
@@ -41,7 +41,7 @@ class MSDataConfig(BaseModel):
     override_height: Optional[int] = None
     override_width: Optional[int] = None
     y_axis: Literal["hidden", "visible"]
-    spectra_spread: str = Field(alias="spectra_spread")
+    spectra_spread: bool = False
 
 
 class Config(BaseModel):
@@ -52,13 +52,29 @@ class Config(BaseModel):
     ms_data: MSDataConfig = Field(alias="MS.data.config")
 
 
+def build_default_config() -> Config:
+    flat: dict[str, Any] = {
+        "general.config": {"width": 600, "height": 400, "theme": "Default"},
+        "IR.data.config": {"y_axis": "hidden", "spectra_spread": True},
+        "MS.data.config": {
+            "y_axis": "visible",
+            "override_width": 500,
+            "spectra_spread": False,
+        },
+    }
+    return Config(**flat)
+
+
 def import_config_toml(path: Path) -> Config:
     if not path.exists():
-        raise ValueError(f'Specified config at "{path.as_uri()}" does not exist')
-    if not path.as_uri().endswith(".toml"):
-        raise ValueError(
-            f"Specified config at \"{path.as_uri()}\" does not end in '.toml'"
-        )
+        raise ValueError(f'Specified config at "{path}" does not exist')
+    if path.suffix != ".toml":
+        raise ValueError(f"Specified config at \"{path}\" does not end in '.toml'")
     with path.open("rb") as file:
         data = tomllib.load(file)
-    return Config(**data)
+    flat = {
+        "general.config": data["general"]["config"],
+        "IR.data.config": data["IR"]["data"]["config"],
+        "MS.data.config": data["MS"]["data"]["config"],
+    }
+    return Config(**flat)

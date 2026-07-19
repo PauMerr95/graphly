@@ -13,6 +13,8 @@ classifiers = [
     'Operating System :: Microsoft :: Windows',
 ]
 dependencies = [
+    "matplotlib>=3.11.1",
+    "pandas>=3.0.3",
     "pydantic>=2.13.4",
 ]
 
