@@ -23,10 +23,10 @@ Graphly is an early-stage CLI tool ("turning data into nice graphs with minimal 
 - `src/config/parser.py` — the only real module so far. It has two responsibilities that will likely split apart as the project grows:
   - `parse_args()`: argparse-based CLI parsing (`graphly <filename> [-c/--config <path>]`).
   - `import_config_toml(path)`: loads a `.toml` config file (via `tomllib`) into a Pydantic `Config` model.
-- Config schema (Pydantic models in `parser.py`) mirrors `graphly.config.toml`'s structure and uses field aliases to map TOML section names to Python attributes:
+- Config schema (Pydantic models in `parser.py`) mirrors `test/test_data/graphly.config.toml`'s structure and uses field aliases to map TOML section names to Python attributes:
   - `Config` has three top-level sections, each keyed by a TOML table alias: `general` (alias `"general.config"`), `ir_data` (alias `"IR.data.config"`), `ms_data` (alias `"MS.data.config"`).
   - All config models use `ConfigDict(populate_by_name=True)`, so fields can be set either by their TOML alias or their Python name.
   - `GeneralConfig` holds global plot dimensions (`width`, `height`) and a `theme` (`"Default"` or `"Seaborn"`).
   - `IRDataConfig`/`MSDataConfig` hold per-dataset overrides (`override_height`/`override_width`, both optional) plus `y_axis` (`"hidden"`/`"visible"`, aliased from `y-axis`) and `spectra_spread`.
-- `graphly.config.toml` at the repo root is a sample/working config file matching this schema — use it as the reference for valid TOML shape when changing the models.
+- `test/test_data/graphly.config.toml` is a sample/working config file matching this schema — use it as the reference for valid TOML shape when changing the models.
 - Tests live under `test/<module>_test/` mirroring `src/` (e.g. `test/config_test/test_parser.py` tests `src/config/parser.py`), and import from the installed `config` package rather than relative paths into `src/`.
