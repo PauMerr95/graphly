@@ -1,1 +1,1 @@
-from .parser import build_parser as build_parser
+from .parser import parse_args as parse_args
